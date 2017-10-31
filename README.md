@@ -1,9 +1,9 @@
 # henderson-recycling-schedule-reader #
 
 ### Table of contents ###
-* [What is this repository for?](#markdown-header-what-is-this-repository-for)
-* [How do I get set up?](#markdown-header-how-do-i-get-set-up)
-* [Who do I talk to?](#markdown-header-who-do-i-talk-to)
+* [What is this repository for?](#what-is-this-repository-for)
+* [How do I get set up?](#how-do-i-get-set-up)
+* [Who do I talk to?](#who-do-i-talk-to)
 
 ### What is this repository for? ###
 
@@ -25,7 +25,7 @@ Improvements I'd like to do:
 * What you do
     1. Set up your environment, referencing the [serverless quickstart documentation](https://serverless.com/framework/docs/providers/aws/guide/quick-start)
     2. Clone the repository
-	    * ``` git clone https://github.com/richard8thday/henderson-recycling-schedule-reader ```
+	    * ``` git clone https://github.com/richard8thday/henderson-recycling-schedule-reader.git ```
     3. From the directory, download dependencies with node
 	    * ``` npm install ```
     5. Deploy the application to your AWS instance, which creates the resources you need to run the function

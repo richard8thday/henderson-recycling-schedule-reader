@@ -8,6 +8,9 @@ functions:
   getschedule:
     handler: handler.getschedule
 
+package:
+  excludeDevDependencies: false
+
 resources:
   Resources:
     hendersonRecyclingSchedule:

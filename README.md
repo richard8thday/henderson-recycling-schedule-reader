@@ -36,4 +36,4 @@ Improvements I'd like to do:
 
 ### Who do I talk to? ###
 
-* [richard@8thdaysoftware.com](mailto:richard@8thdaysoftware.com)
+* [richardleesimpson@gmail.com](mailto:richardleesimpson@gmail.com)

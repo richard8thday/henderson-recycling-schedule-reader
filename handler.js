@@ -3,6 +3,7 @@ const request = require('axios');
 const AWS = require('aws-sdk');
 const dynamo = new AWS.DynamoDB.DocumentClient();
 const { extractPickupsFromHTML } = require('./helpers');
+const gcal = require('./gcal/service.js');
 
 module.exports.getschedule = (event, context, callback) => {
   let pickups;
@@ -13,19 +14,9 @@ module.exports.getschedule = (event, context, callback) => {
     .then(({ data }) => {
       pickups = extractPickupsFromHTML(data);
     })
-    /*
-    // TODO: Read from dynamo, compare, and determine what should happen with new/updated data
-    .then(() => {
-      // Get existing schedules
-
-      // Compare pickup dates
-
-      // TODO: Figure out what to do with mismatched data
-    })
-    */
     // Write to dynamo
     .then(() => {
-      // Save schedule
+      // Save schedule to Amazon DynamoDB
       return dynamo.put({
         TableName: 'hendersonRecyclingSchedule',
         Item: {
@@ -33,6 +24,10 @@ module.exports.getschedule = (event, context, callback) => {
           pickups: pickups
         }
       }).promise();
+    })
+    .then(() => {
+      // Sync the schedule with a Google calendar
+      gcal.syncEvents(pickups);
     })
     // Write to the console
     .then(() => {

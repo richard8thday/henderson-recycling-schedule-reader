@@ -2,23 +2,48 @@ const google = require('googleapis');
 const moment = require('moment');
 const async = require('asyncawait/async');
 const await = require('asyncawait/await');
+const fs = require('fs');
 
-const privatekey = require('./private_key.json');
-const calendarId = '8dl5noa2b0mh3hnoqu3pb1a8oc@group.calendar.google.com';
+const configfile = './config.json';
+var calendarId;
 const SCOPES = ['https://www.googleapis.com/auth/calendar'];
+const pkfile = './private_key.json';
+var privatekey;
 
-// Instantiate a JWT auth client for the service to use
-var jwtClient = new google.auth.JWT(
-	privatekey.client_email,
-	null,
-	privatekey.private_key,
-	SCOPES
-);
+// If calendar integration is enabled, import the private key and auth
+if (integrationEnabled()) {
+	// Instantiate a JWT auth client for the service to use
+	var jwtClient = new google.auth.JWT(
+		privatekey.client_email,
+		null,
+		privatekey.private_key,
+		SCOPES
+	);
+}
+
+/**
+ * Determine whether calendar integration is enabled
+ */
+function integrationEnabled() {
+	try {
+		// Import the private key
+		privatekey = require(pkfile);
+
+		// Import the config file
+		calendarId = require(configfile).calendar_id;
+
+		return true;
+	}
+	catch (e) {
+		return false;
+	}
+}
 
 /**
  * Ensures that the JWT auth client is authorized
  */
 function checkAuthorization() {
+	// If the JWT auth client does not have a gtoken, attempt to authenticate
 	if (jwtClient.gtoken == undefined || jwtClient.gtoken == null) {
 		// Authenticate request
 		jwtClient.authorize(function (err, tokens) {
@@ -150,6 +175,11 @@ var deleteEvent = async(function (eventId) {
  * @param {array} events An array of dates to create events for.
  */
 var syncEvents = async (function (events) {
+	// If calendar integration is not enabled, return
+	if (!integrationEnabled()) {
+		return "Calendar integration is disabled. Please ensure that gcal/private_key.json exists.";
+	}
+
 	// Get existing events
 	let existingEvents = await (getAllEvents());
 	let newEvents = [];
@@ -170,7 +200,6 @@ var syncEvents = async (function (events) {
 	
 	// Create new events
 	await (createEvents(newEvents));
-		//.catch(err => console.log("Create events error", err));
 });
 
 /**

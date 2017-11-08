@@ -1,7 +1,11 @@
-# package directories
+# Package directories
 node_modules
 jspm_packages
 package-lock.json
 
 # Serverless directories
 .serverless
+
+# Google calendar json
+gcal/config.json
+gcal/private_key.json

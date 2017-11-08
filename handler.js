@@ -7,6 +7,7 @@ const gcal = require('./gcal/service.js');
 
 module.exports.getschedule = (event, context, callback) => {
   let pickups;
+  let gcalResponse;
 
   // Request html page contents
   request('http://www.hendersontn.org/recycling/recycling.html')
@@ -27,11 +28,11 @@ module.exports.getschedule = (event, context, callback) => {
     })
     .then(() => {
       // Sync the schedule with a Google calendar
-      gcal.syncEvents(pickups);
+      gcalResponse = gcal.syncEvents(pickups);
     })
     // Write to the console
     .then(() => {
-      callback(null, { pickups: pickups });
+      callback(null, { gcalResponse: gcalResponse, pickups: pickups });
     })
     .catch(callback);
 };

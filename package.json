@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "asyncawait": "^1.0.6",
     "aws-sdk": "^2.141.0",
     "axios": "^0.17.0",
     "cheerio": "^1.0.0-rc.2",

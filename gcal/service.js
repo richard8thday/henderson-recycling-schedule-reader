@@ -1,8 +1,9 @@
 const google = require('googleapis');
-const privatekey = require('./private_key.json');
 const moment = require('moment');
-//var promise = require('promise');
+const async = require('asyncawait/async');
+const await = require('asyncawait/await');
 
+const privatekey = require('./private_key.json');
 const calendarId = '8dl5noa2b0mh3hnoqu3pb1a8oc@group.calendar.google.com';
 const SCOPES = ['https://www.googleapis.com/auth/calendar'];
 
@@ -34,13 +35,13 @@ function checkAuthorization() {
 /**
  * Retrieve all events from the calendar
  */
-async function getAllEvents() {
+var getAllEvents = async(function () {
 	var events = [];
 	var pageToken = null;
 
 	while (true) {
 		// Get events
-		var response = await getEvents(pageToken);
+		var response = await (getEvents(pageToken));
 
 		// Add events to array
 		for (let event of response.items) {
@@ -57,14 +58,14 @@ async function getAllEvents() {
 	}
 
 	return events;
-}
+});
 
 /**
  * Retrieve all events from a certain page of the calendar.
  *
  * @param {string} pageToken A token specifying which result page to return.
  */
-function getEvents(pageToken) {
+var getEvents = async(function (pageToken) {
 	return new Promise(function (fulfill, reject) {
 		google.calendar('v3').events.list({
 			auth: jwtClient,
@@ -78,14 +79,14 @@ function getEvents(pageToken) {
 			fulfill(response);
 		});
 	});
-}
+});
 
 /**
  * Create an all-day event on the calendar.
  *
  * @param {string} date A date string.
  */
-function createEvent(date) {
+var createEvent = async(function (date) {
 	return new Promise(function (fulfill, reject) {
 		// Check authorization
 		checkAuthorization();
@@ -116,14 +117,14 @@ function createEvent(date) {
 			fulfill(response);
 		});
 	});
-}
+});
 
 /**
  * Delete an event from the calendar.
  *
  * @param {string} eventId The event identifier.
  */
-function deleteEvent(eventId) {
+var deleteEvent = async(function (eventId) {
 	return new Promise(function (fulfill, reject) {
 		// Check authorization
 		checkAuthorization();
@@ -141,16 +142,16 @@ function deleteEvent(eventId) {
 			fulfill(response);
 		});
 	});
-}
+});
 
 /**
  * Add new events to the calendar
  *
  * @param {array} events An array of dates to create events for.
  */
-async function syncEvents(events) {
+var syncEvents = async (function (events) {
 	// Get existing events
-	let existingEvents = await getAllEvents();
+	let existingEvents = await (getAllEvents());
 	let newEvents = [];
 
 	// Iterate over events to sync
@@ -168,31 +169,31 @@ async function syncEvents(events) {
 	});
 	
 	// Create new events
-	await createEvents(newEvents)
-		.catch(err => console.log("Create events error", err));
-}
+	await (createEvents(newEvents));
+		//.catch(err => console.log("Create events error", err));
+});
 
 /**
  * Add new events to the calendar
  *
  * @param {array} events An array of dates to create events for.
  */
-async function createEvents(events) {
-	return await Promise.all(events.map(async (event) => {
-		await createEvent(event);
-	}))
-}
+var createEvents = async (function (events) {
+	return await (Promise.all(events.map(async ((event) => {
+		await (createEvent(event));
+	}))));
+});
 
 /**
  * Clear all events from the calendar
  */
-async function clearEvents() {
-	let events = await getAllEvents();
+var clearEvents = async (function () {
+	let events = await (getAllEvents());
 
-	await Promise.all(events.map(async (event) => {
-		await deleteEvent(event.id);
-	}));
-}
+	await (Promise.all(events.map(async ((event) => {
+		await (deleteEvent(event.id));
+	}))));
+});
 
 module.exports = {
 	syncEvents

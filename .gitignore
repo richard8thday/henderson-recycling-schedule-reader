@@ -9,3 +9,6 @@ package-lock.json
 # Google calendar json
 gcal/config.json
 gcal/private_key.json
+
+# OS files
+.DS_Store

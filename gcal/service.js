@@ -133,6 +133,7 @@ var createEvent = async(function (date) {
 				'reminders': {
 					'useDefault': true,
 				},
+				'transparency': 'transparent',
 			},
 		}, function(err, response) {
 			if (err) {

@@ -32,6 +32,7 @@ Improvements I'd like to do:
     4. (Optional) A [Google Calendar integration](#how-do-i-integrate-with-google-calendar)
 * What you do
     1. Set up your environment, referencing the [serverless quickstart documentation](https://serverless.com/framework/docs/providers/aws/guide/quick-start)
+    	* Make sure to [configure serverless to use your AWS credentials](https://serverless.com/framework/docs/providers/aws/guide/credentials#using-aws-profiles)
     2. Clone the repository
 	    * ``` git clone https://github.com/richardleesimpson/henderson-recycling-schedule-reader.git ```
     3. From the directory, download dependencies with node

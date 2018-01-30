@@ -5,34 +5,51 @@ function extractPickupsFromHTML(html) {
   // Load the html string
   const $ = cheerio.load(html);
 
-  // Get relevant paragraph elements. Unfortunately, this is as specific as the poorly-laid-out website will allow us to get
-  const elements = $('html > body > table > tbody > tr > td > table > tbody > tr > td > p');
-
   // Create a list to hold data
   const data = [];
 
-  // Iterate over elements
+  // Get all the elements on the page, since there is no consistent or well-defined structure
+  const elements = $('*');
+
+  // Iterate over elements on the page
   elements.each((i, el) => {
-    // If the element contains a break, it is the list of dates
-    if ($(el).children('br').length > 0) {
-      // Split the dates by newline
-      let dates = $($(el).text().split("\n"));
-      
-      // Iterate over the dates in the element
-      dates.each((j, v) => {
-        // Retrieve the value
-        let value = v.trim();
+    // Retrieve the text value
+    let value = $(el).text().trim().replace(/ *\([^)]*\) */g, '');
 
-        // Convert to a date
-        let date = moment(value, 'MMM DD, YYYY').toISOString();
+    // Attempt date conversion
+    let date = getValidDate(value);
 
-        // Add the date to the list
-        data.push(date);
-      });
+    // If the date conversion was successful, add it to the list
+    if (date != null) {
+      data.push(date);
     }
   });
 
-  return data;
+  // Return the distinct list of dates on the page
+  return data.filter(function(elem, pos) {
+    return data.indexOf(elem) == pos;
+  });
+}
+
+function getValidDate(value) {
+  // Define an array of supported date formats
+  const supportedFormats = [
+    'MMM D, YYYY',
+    'MMM DD, YYYY',
+    'MMMM D, YYYY',
+    'MMMM DD, YYYY'
+  ];
+
+  // Iterate over supported formats
+  for (var i = 0; i < supportedFormats.length; i++) {
+    // If moment can convert to a date using strict parsing of this format, return the date
+    if (moment(value, supportedFormats[i], true).isValid()) {
+      return moment(value, supportedFormats[i], true).toISOString();
+    }
+  }
+
+  // If the date could not be parsed from our supported formats, return null
+  return null;
 }
 
 module.exports = {

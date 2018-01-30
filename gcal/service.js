@@ -177,7 +177,7 @@ var deleteEvent = async(function (eventId) {
 var syncEvents = async (function (events) {
 	// If calendar integration is not enabled, return
 	if (!integrationEnabled()) {
-		return "Calendar integration is disabled. Please ensure that gcal/private_key.json exists.";
+		return "Calendar integration is disabled. To enable, add the private_key.json and config.json files to the directory. See the README for more information.";
 	}
 
 	// Get existing events

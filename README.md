@@ -1,4 +1,4 @@
-# henderson-recycling-schedule-reader #
+# henderson-recycling-schedule-reader (deprecated) #
 
 ### Table of contents ###
 * [What is this repository for?](#what-is-this-repository-for)
@@ -9,18 +9,11 @@
 
 ### What is this repository for? ###
 
-The city of Henderson, TN has a website that displays its Recycling Program pickup schedule. Schedule information is only available as static text on the site, which makes it less than convenient to access—especially when you are walking out the door in the morning en route to work and can't remember if you need to put out the recycling bin. In addition, the page is updated periodically and historical data is lost.
+From 2017-2019, the city of Henderson, TN had a website that displayed its Recycling Program pickup schedule. Schedule information was only available as static text on the site, which made it less than convenient to access—especially when you were walking out the door in the morning en route to work and couldn't remember if you needed to put out the recycling bin. In addition, the page was updated periodically and historical data was lost.
 
-This project is the first piece of making this information easier to digest. It scrapes the site and writes the resultant data to AWS DynamoDB for further processing. Once deployed, a Lambda script can be leveraged to run this automatically and keep the database up to date.
+This project was a proof-of-concept for making the information easier to digest. It scraped the site and wrote the resultant data to AWS DynamoDB for further processing. Once deployed, a Lambda script was leveraged to run automatically and keep the database up to date.
 
-It also writes to [a public Google calendar that I have created for your convenience](https://calendar.google.com/calendar?cid=OGRsNW5vYTJiMG1oM2hub3F1M3BiMWE4b2NAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ)... you know, if you just want the data and don't care much about the AWS part.
-
-Improvements I'd like to do:
-
-* Make the calendar integration more robust, as it currently only adds new events. This leads to bad data:
-	* Let's say the website has a pickup date of 11/10/2017 on the site today; the script runs and generates a new calendar event.
-	* The next day the site is updated and the date that was previously 11/10/2017 is 11/09/2017; the script runs and generates a new calendar event.
-	* Now we have two pickup dates on the calendar, at least one of which is incorrect.
+It also wrote to [a public Google calendar that I created for your convenience](https://calendar.google.com/calendar?cid=OGRsNW5vYTJiMG1oM2hub3F1M3BiMWE4b2NAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ)... you know, if you just want the data and don't care much about the AWS part.
 
 ### How do I get set up? ###
 
